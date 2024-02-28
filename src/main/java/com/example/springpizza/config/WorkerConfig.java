@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 public class WorkerConfig {
 
     @Bean
-    @Scope(value = "singleton")
+    @Scope(value = "prototype")
     //Use this bean to show difference between singleton and prototype
     public Worker worker() {
         Worker worker = new Worker();
