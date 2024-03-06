@@ -1,0 +1,19 @@
+### Create order
+POST http://localhost:8080/api/pizza/v1/order
+Content-Type: application/json
+
+{
+  "composition": "tomato, onion"
+}
+
+### Get order by id
+GET http://localhost:8080/api/pizza/v1/order/{{orderId}}
+
+### Get all orders
+GET http://localhost:8080/api/pizza/v1/order
+
+### Delete order
+DELETE http://localhost:8080/api/pizza/v1/order/{{orderId}}
+
+### Delete order
+PUT http://localhost:8080/api/pizza/v1/order/{{orderId}}
