@@ -3,6 +3,7 @@ package com.example.springpizza.service;
 import com.example.springpizza.adapter.web.dto.CompositionIn;
 import com.example.springpizza.adapter.web.dto.Order;
 import com.example.springpizza.adapter.web.errors.NotFoundException;
+import com.example.springpizza.domain.OrderEntity;
 import com.example.springpizza.service.common.Worker;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -18,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OrderService {
 
     Worker worker;
-    Map<Long, String> orders = new ConcurrentHashMap<>();
+    Map<Long, OrderEntity> orders = new ConcurrentHashMap<>();
 
     @Autowired
     public void setWorker(Worker worker) {
@@ -27,7 +29,8 @@ public class OrderService {
 
     public Long createOrder(CompositionIn composition) {
         Long orderId = new Random().nextLong();
-        orders.put(orderId, composition.composition());
+        orders.put(orderId, OrderEntity.of(orderId, composition.composition(),
+                composition.needCutlery() ? composition.cutleryCount() : 0));
         worker.addJob(() -> {
             log.info("Start creating order with id {}", orderId);
             try {
@@ -40,15 +43,17 @@ public class OrderService {
         return orderId;
     }
 
-    public Map<Long, String> getOrders() {
-        return orders;
+    public Map<Long, String> getOrdersWithComposition(Long ordersCount) {
+        return orders.entrySet().stream().limit(ordersCount)
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> String.join("; ", e.getValue().getComposition())));
     }
 
     public Order getOrder(Long orderId) {
         if (!orders.containsKey(orderId)) {
             throw new NotFoundException(orderId);
         }
-        return new Order(orderId, orders.get(orderId));
+        return new Order(orderId, String.join("; ", orders.get(orderId).getComposition()));
     }
 
 

@@ -1,16 +1,22 @@
 ### Create order
-POST http://localhost:8080/api/pizza/v1/order
+POST http://localhost:8080/api/pizza/v1/order?l=ru
 Content-Type: application/json
 
 {
-  "composition": "tomato, onion"
+  "composition": [
+    "tomato",
+    "onion",
+    "pepper"
+  ],
+  "needCutlery": true,
+  "cutleryCount": 0
 }
 
 ### Get order by id
 GET http://localhost:8080/api/pizza/v1/order/{{orderId}}
 
 ### Get all orders
-GET http://localhost:8080/api/pizza/v1/order
+GET http://localhost:8080/api/pizza/v1/order?size=-3
 
 ### Delete order
 DELETE http://localhost:8080/api/pizza/v1/order/{{orderId}}
