@@ -1,5 +1,6 @@
 package com.example.springpizza.service;
 
+import com.example.springpizza.adapter.web.OrderApi;
 import com.example.springpizza.adapter.web.dto.CompositionIn;
 import com.example.springpizza.adapter.web.dto.Order;
 import com.example.springpizza.adapter.web.errors.NotFoundException;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 //Setter injection used for this service
-public class OrderService {
+public class OrderService implements OrderApi {
 
     Worker worker;
     Map<Long, OrderEntity> orders = new ConcurrentHashMap<>();
@@ -40,6 +41,8 @@ public class OrderService {
             }
             log.info("End creating order with id {}", orderId);
         });
+
+        // save in repo -> validation -> business logic
         return orderId;
     }
 
