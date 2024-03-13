@@ -1,6 +1,7 @@
 package com.example.springpizza.service;
 
 import com.example.springpizza.service.common.Worker;
+import com.example.springpizza.service.deliveryinfo.DeliveryInfoServiceApi;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.log4j.Log4j2;
@@ -14,11 +15,15 @@ public class DeliveryService {
 
     @Autowired
     Worker worker;
+    @Autowired
+    DeliveryInfoServiceApi deliveryInfoServiceApi;
 
     public void deliverOrder(Long orderId) {
         worker.addJob(() -> {
             log.info("Start delivering order with id {}", orderId);
             try {
+                var result = deliveryInfoServiceApi.getDeliveryInfo(orderId);
+                log.info("Delivery info = {}", result);
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

@@ -1,0 +1,4 @@
+pizza:
+  order:
+    delivery:
+      enable: true
