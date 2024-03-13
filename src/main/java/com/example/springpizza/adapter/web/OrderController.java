@@ -2,8 +2,6 @@ package com.example.springpizza.adapter.web;
 
 import com.example.springpizza.adapter.web.dto.CompositionIn;
 import com.example.springpizza.adapter.web.dto.Order;
-import com.example.springpizza.service.OrderService;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +21,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api/pizza/v1", produces = APPLICATION_JSON_VALUE)
 public class OrderController {
 
-    OrderService orderService;
+    OrderApi orderService;
 
     @PostMapping(value = "/order", consumes = APPLICATION_JSON_VALUE)
-    public Long createOrder(@Valid @RequestBody CompositionIn composition) {
+    public Long createOrder(@RequestBody CompositionIn composition) {
         return orderService.createOrder(composition);
     }
 

@@ -1,5 +1,6 @@
 package com.example.springpizza.adapter.web.errors;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -11,6 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -21,6 +23,12 @@ public class CommonAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public ErrorResponse handleNotFound(NotFoundException ex) {
         return new ErrorResponse(ex.getCode(), ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler
+    public List<ErrorResponse> handleConstraints(ConstraintViolationException ex) {
+        return ex.getConstraintViolations()
+                .stream().map(e -> new ErrorResponse(VALIDATION_ERROR, e.getPropertyPath().toString(), e.getMessage())).toList();
     }
 
     @Override
