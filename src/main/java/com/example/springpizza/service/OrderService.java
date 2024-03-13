@@ -29,8 +29,13 @@ public class OrderService {
 
     public Long createOrder(CompositionIn composition) {
         Long orderId = new Random().nextLong();
-        orders.put(orderId, OrderEntity.of(orderId, composition.composition(),
-                composition.needCutlery() ? composition.cutleryCount() : 0));
+        orders.put(orderId, OrderEntity.of(
+                orderId,
+                composition.composition(),
+                composition.needCutlery()
+                        ? composition.cutleryCount()
+                        : 0
+        ));
         worker.addJob(() -> {
             log.info("Start creating order with id {}", orderId);
             try {

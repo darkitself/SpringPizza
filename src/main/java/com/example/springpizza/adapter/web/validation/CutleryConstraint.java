@@ -13,9 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.TYPE})
 public @interface CutleryConstraint {
 
-    String message() default "If you need cutlery, you should specify count";
-    // with properties file
-    //String message() default "{pizza.order.cutlery.not_valid}";
+    String message() default "{pizza.order.cutlery.not_valid}";
 
     Class<?>[] groups() default {};
 
