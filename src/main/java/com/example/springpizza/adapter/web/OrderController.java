@@ -1,18 +1,15 @@
 package com.example.springpizza.adapter.web;
 
-import com.example.springpizza.adapter.web.dto.CompositionIn;
-import com.example.springpizza.adapter.web.dto.Order;
+import com.example.springpizza.adapter.web.dto.CreateOrderRequest;
+import com.example.springpizza.domain.OrderEntity;
 import com.example.springpizza.service.OrderService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,8 +23,8 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/order", consumes = APPLICATION_JSON_VALUE)
-    public Long createOrder(@Valid @RequestBody CompositionIn composition) {
-        return orderService.createOrder(composition);
+    public OrderEntity createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
+        return orderService.createOrder(orderRequest);
     }
 
     @DeleteMapping("/order/{orderId}")
@@ -37,13 +34,8 @@ public class OrderController {
     }
 
     @GetMapping("/order/{orderId}")
-    public Order getOrder(@PathVariable Long orderId) {
+    public OrderEntity getOrder(@PathVariable Long orderId) {
         return orderService.getOrder(orderId);
-    }
-
-    @GetMapping("/order")
-    public Map<Long, String> getOrders(@Min(0) @RequestParam("size") Long ordersCount) {
-        return orderService.getOrdersWithComposition(ordersCount);
     }
 
     // Example for personal exception handler

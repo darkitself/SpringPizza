@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2024-03-20-15-02" author="KaluginEA" context="prod">
+
+        <comment>
+            Creating order table
+        </comment>
+
+        <createSequence sequenceName="hibernate_sequence" incrementBy="30"/>
+
+        <createTable tableName="order">
+
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="order_pk"/>
+            </column>
+
+            <column name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="cutlery_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="dish">
+
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="dish_pk"/>
+            </column>
+
+            <column name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="composition" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="price" type="NUMERIC(19,2)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="order_dish">
+
+            <column name="order_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="order_dish_pk"
+                             foreignKeyName="order_dish_order_fk"
+                             referencedTableName="order"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="dish_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="order_dish_pk"
+                             foreignKeyName="order_dish_dish_fk"
+                             referencedTableName="dish"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

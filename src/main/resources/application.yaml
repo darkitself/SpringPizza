@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: dev
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        order_updates: true
+        default_schema: ${POSTGRES_SCHEMA:public}
+        jdbc:
+          lob:
+            non_contextual_creation: true
+          time_zone: UTC
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:spring_pizza_postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:spring_pizza}
+    username: ${POSTGRES_USERNAME:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
