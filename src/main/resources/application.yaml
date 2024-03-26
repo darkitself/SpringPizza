@@ -2,6 +2,17 @@ spring:
   profiles:
     active: dev
 
+  jackson:
+    visibility:
+      FIELD: any
+    deserialization:
+      READ_UNKNOWN_ENUM_VALUES_AS_NULL: on
+      ADJUST_DATES_TO_CONTEXT_TIME_ZONE: off
+      FAIL_ON_UNKNOWN_PROPERTIES: off
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_ENUMS: on
+    default-property-inclusion: non_null
+
   jpa:
     open-in-view: false
     hibernate:
@@ -22,3 +33,7 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+
+logging:
+  level:
+    sql: debug

@@ -1,4 +1,4 @@
-package com.example.springpizza.adapter.web.dto;
+package com.example.springpizza.adapter.web.dto.request;
 
 import java.util.Map;
 

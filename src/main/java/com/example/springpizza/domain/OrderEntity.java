@@ -1,6 +1,5 @@
 package com.example.springpizza.domain;
 
-import com.example.springpizza.adapter.web.dto.CreateOrderRequest;
 import com.example.springpizza.domain.common.BaseDomainEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -28,15 +27,15 @@ public class OrderEntity extends BaseDomainEntity {
 
     Integer cutleryCount;
 
-    public static OrderEntity createOrderFrom(List<DishEntity> dishes, CreateOrderRequest orderRequest) {
-        OrderEntity order = new OrderEntity();
-        order.dishes = dishes.stream()
-                .map(d -> new OrderDishRelation(
-                        order,
-                        d,
-                        orderRequest.dishesAndCount().get(d.getId())
-                )).toList();
-        order.cutleryCount = orderRequest.cutleryCount();
-        return order;
+    public OrderEntity(OrderContext cntx) {
+        dishes = cntx.dishes();
+        dishes.forEach(d -> d.setOrder(this));
+        cutleryCount = cntx.cutleryCount();
+    }
+
+    public record OrderContext(List<OrderDishRelation> dishes,
+
+                               Integer cutleryCount) {
+
     }
 }

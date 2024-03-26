@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
 
@@ -24,6 +25,7 @@ public class OrderDishRelation {
 
     @Id
     @ManyToOne
+    @Setter
     @JoinColumn(name = "order_id")
     @JsonIgnore
     OrderEntity order;
