@@ -1,22 +1,17 @@
 package com.example.springpizza.adapter.web;
 
-import com.example.springpizza.adapter.web.dto.CompositionIn;
-import com.example.springpizza.adapter.web.dto.Order;
+import com.example.springpizza.adapter.web.dto.request.CreateOrderRequest;
+import com.example.springpizza.adapter.web.dto.response.OrderResponse;
 import com.example.springpizza.service.OrderService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -26,8 +21,8 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/order", consumes = APPLICATION_JSON_VALUE)
-    public Long createOrder(@Valid @RequestBody CompositionIn composition) {
-        return orderService.createOrder(composition);
+    public OrderResponse createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
+        return orderService.createOrder(orderRequest);
     }
 
     @DeleteMapping("/order/{orderId}")
@@ -37,18 +32,8 @@ public class OrderController {
     }
 
     @GetMapping("/order/{orderId}")
-    public Order getOrder(@PathVariable Long orderId) {
+    public OrderResponse getOrder(@PathVariable Long orderId) {
         return orderService.getOrder(orderId);
     }
 
-    @GetMapping("/order")
-    public Map<Long, String> getOrders(@Min(0) @RequestParam("size") Long ordersCount) {
-        return orderService.getOrdersWithComposition(ordersCount);
-    }
-
-    // Example for personal exception handler
-//    @ExceptionHandler
-//    public ErrorResponse handleNotFound(NotFoundException ex) {
-//        return new ErrorResponse("NOT_FOUND_ORDER", ex.getLocalizedMessage());
-//    }
 }

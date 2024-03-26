@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  spring-pizza-backend:
+    container_name: spring_pizza_backend
+    build:
+      dockerfile: Dockerfile
+    image: spring-pizza-backend:latest
+    hostname: spring_pizza_backend
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-pizza-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    hostname: spring_pizza_postgres
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "6432:5432"
+    networks:
+      - spring-pizza-network
+
+networks:
+  spring-pizza-network:
+    driver: bridge
