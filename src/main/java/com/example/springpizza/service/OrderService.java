@@ -5,6 +5,7 @@ import com.example.springpizza.adapter.web.dto.request.CreateOrderRequest;
 import com.example.springpizza.adapter.web.dto.response.OrderResponse;
 import com.example.springpizza.adapter.web.errors.NotFoundException;
 import com.example.springpizza.domain.OrderEntity;
+import com.example.springpizza.domain.user.UserEntity;
 import com.example.springpizza.service.factory.OrderFactory;
 import com.example.springpizza.service.mapper.OrderMapper;
 import lombok.AccessLevel;
@@ -27,9 +28,9 @@ public class OrderService {
 
     OrderFactory orderFactory;
 
-    public OrderResponse createOrder(CreateOrderRequest orderRequest) {
+    public OrderResponse createOrder(UserEntity user, CreateOrderRequest orderRequest) {
         OrderEntity.OrderContext cntx = orderFactory.createContext(orderRequest);
-        OrderEntity savedOrder = orderRepository.save(new OrderEntity(cntx));
+        OrderEntity savedOrder = orderRepository.save(new OrderEntity(cntx, user));
         return orderMapper.entityToResponse(savedOrder);
     }
 

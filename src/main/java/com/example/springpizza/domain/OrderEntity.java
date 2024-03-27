@@ -1,10 +1,8 @@
 package com.example.springpizza.domain;
 
 import com.example.springpizza.domain.common.BaseDomainEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.example.springpizza.domain.user.UserEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,14 +25,18 @@ public class OrderEntity extends BaseDomainEntity {
 
     Integer cutleryCount;
 
-    public OrderEntity(OrderContext cntx) {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    UserEntity user;
+
+    public OrderEntity(OrderContext cntx, UserEntity user) {
         dishes = cntx.dishes();
         dishes.forEach(d -> d.setOrder(this));
         cutleryCount = cntx.cutleryCount();
+        this.user = user;
     }
 
     public record OrderContext(List<OrderDishRelation> dishes,
-
                                Integer cutleryCount) {
 
     }
