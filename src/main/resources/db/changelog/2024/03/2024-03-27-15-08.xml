@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2024-03-27-15-08" author="KaluginEA" context="prod">
+
+        <comment>
+            Create user table
+        </comment>
+
+        <createTable tableName="user_info">
+
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="user_pk"/>
+            </column>
+
+            <column name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="username" type="text">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="password" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="authorities" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="account_non_expired" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="account_non_locked" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="credentials_non_expired" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="enabled" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addColumn tableName="order">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"
+                             referencedTableName="user_info"
+                             referencedColumnNames="id"
+                             foreignKeyName="order_user_info_fk"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>
