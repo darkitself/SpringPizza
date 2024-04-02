@@ -37,3 +37,10 @@ spring:
 logging:
   level:
     sql: debug
+
+pizza:
+  email:
+    enable: false
+    recipients:
+      - "test@test.ru"
+      - "other@other.com"

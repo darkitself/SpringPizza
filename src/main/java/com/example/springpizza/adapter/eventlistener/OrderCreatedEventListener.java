@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
+import static org.springframework.transaction.event.TransactionPhase.BEFORE_COMMIT;
 
 @Log4j2
 @Service
