@@ -1,10 +1,11 @@
 package com.example.springpizza.service;
 
+import com.example.springpizza.adapter.eventlistener.event.AsyncCreateOrderEvent;
 import com.example.springpizza.adapter.repository.OrderRepository;
 import com.example.springpizza.adapter.web.dto.request.CreateOrderRequest;
 import com.example.springpizza.adapter.web.dto.response.OrderResponse;
 import com.example.springpizza.adapter.web.errors.NotFoundException;
-import com.example.springpizza.domain.OrderEntity;
+import com.example.springpizza.domain.order.OrderEntity;
 import com.example.springpizza.domain.user.UserEntity;
 import com.example.springpizza.service.factory.OrderFactory;
 import com.example.springpizza.service.mapper.OrderMapper;
@@ -12,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +30,12 @@ public class OrderService {
 
     OrderFactory orderFactory;
 
-    public OrderResponse createOrder(UserEntity user, CreateOrderRequest orderRequest) {
+    ApplicationEventPublisher applicationEventPublisher;
+
+    public void createOrder(UserEntity user, CreateOrderRequest orderRequest) {
+
         OrderEntity.OrderContext cntx = orderFactory.createContext(orderRequest);
-        OrderEntity savedOrder = orderRepository.save(new OrderEntity(cntx, user));
-        return orderMapper.entityToResponse(savedOrder);
+        applicationEventPublisher.publishEvent(new AsyncCreateOrderEvent(cntx, user));
     }
 
     public OrderResponse getOrder(Long orderId) {

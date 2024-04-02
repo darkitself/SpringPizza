@@ -1,6 +1,8 @@
-package com.example.springpizza.domain;
+package com.example.springpizza.domain.order;
 
+import com.example.springpizza.domain.OrderDishRelation;
 import com.example.springpizza.domain.common.BaseDomainEntity;
+import com.example.springpizza.domain.order.event.OrderCreatedEvent;
 import com.example.springpizza.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,6 +36,7 @@ public class OrderEntity extends BaseDomainEntity {
         dishes.forEach(d -> d.setOrder(this));
         cutleryCount = cntx.cutleryCount();
         this.user = user;
+        registerEvents(new OrderCreatedEvent(this));
     }
 
     public record OrderContext(List<OrderDishRelation> dishes,

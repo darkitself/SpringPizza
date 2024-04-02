@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @MappedSuperclass
 @FieldNameConstants(innerTypeName = "BaseFields")
 @FieldDefaults(level = PROTECTED)
-public abstract class BaseDomainEntity {
+public abstract class BaseDomainEntity extends BaseAggregateRoot {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = HibernateSequence.NAME)
     @SequenceGenerator(name = HibernateSequence.NAME, allocationSize = HibernateSequence.ALLOCATION_SIZE)

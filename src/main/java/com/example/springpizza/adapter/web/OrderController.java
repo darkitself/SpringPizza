@@ -23,9 +23,9 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/order", consumes = APPLICATION_JSON_VALUE)
-    public OrderResponse createOrder(@AuthenticationPrincipal UserEntity user,
+    public void createOrder(@AuthenticationPrincipal UserEntity user,
                                      @Valid @RequestBody CreateOrderRequest orderRequest) {
-        return orderService.createOrder(user, orderRequest);
+        orderService.createOrder(user, orderRequest);
     }
 
     @DeleteMapping("/order/{orderId}")
