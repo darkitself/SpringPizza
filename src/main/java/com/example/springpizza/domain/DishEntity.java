@@ -2,6 +2,7 @@ package com.example.springpizza.domain;
 
 import com.example.springpizza.adapter.web.dto.request.CreateDishRequest;
 import com.example.springpizza.domain.common.BaseDomainEntity;
+import com.example.springpizza.domain.order.OrderDishRelation;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

@@ -1,19 +1,19 @@
 ### Create order
 POST http://localhost:8080/api/pizza/v1/order?l=ru
 Content-Type: application/json
+Authorization: Basic user password
 
 {
-  "composition": [
-    "tomato",
-    "onion",
-    "pepper"
-  ],
-  "needCutlery": true,
+  "dishesAndCount": {
+    "61": 1
+  },
   "cutleryCount": 0
 }
 
 ### Get order by id
 GET http://localhost:8080/api/pizza/v1/order/{{orderId}}
+Content-Type: application/json
+Authorization: Basic user password
 
 ### Get all orders
 GET http://localhost:8080/api/pizza/v1/order?size=-3
@@ -23,3 +23,15 @@ DELETE http://localhost:8080/api/pizza/v1/order/{{orderId}}
 
 ### Delete order
 PUT http://localhost:8080/api/pizza/v1/order/{{orderId}}
+
+### Registrate
+POST http://localhost:8080/public/pizza/v1/registration
+Content-Type: application/json
+
+{
+  "login": "user",
+  "password": "password",
+  "roles": [
+    "ROLE_CLIENT"
+  ]
+}

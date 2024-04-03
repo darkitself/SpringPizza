@@ -1,9 +1,9 @@
 package com.example.springpizza.adapter.repository;
 
-import com.example.springpizza.domain.order.OrderEntity;
+import com.example.springpizza.domain.audit.AuditEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+public interface AuditRepository extends JpaRepository<AuditEntity, Long> {
 }

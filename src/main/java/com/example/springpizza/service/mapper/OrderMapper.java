@@ -1,7 +1,7 @@
 package com.example.springpizza.service.mapper;
 
 import com.example.springpizza.adapter.web.dto.response.OrderResponse;
-import com.example.springpizza.domain.OrderEntity;
+import com.example.springpizza.domain.order.OrderEntity;
 import org.mapstruct.Mapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

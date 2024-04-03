@@ -1,4 +1,4 @@
-package com.example.springpizza.domain;
+package com.example.springpizza.domain.order;
 
 import com.example.springpizza.domain.common.BaseDomainEntity;
 import com.example.springpizza.domain.user.UserEntity;
