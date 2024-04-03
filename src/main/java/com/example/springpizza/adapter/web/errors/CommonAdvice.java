@@ -1,5 +1,6 @@
 package com.example.springpizza.adapter.web.errors;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -11,6 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -21,6 +23,12 @@ public class CommonAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public ErrorResponse handleNotFound(NotFoundException ex) {
         return new ErrorResponse(ex.getCode(), ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler
+    public List<ErrorResponse> handleConstraints(ConstraintViolationException ex) {
+        return ex.getConstraintViolations()
+                .stream().map(e -> new ErrorResponse(VALIDATION_ERROR, e.getPropertyPath().toString(), e.getMessage())).toList();
     }
 
     @Override
@@ -35,19 +43,4 @@ public class CommonAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest()
                 .body(errors);
     }
-
-
-    // with another status
-//    @ExceptionHandler
-//    public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException ex) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .body(new ErrorResponse(ex.getCode(), ex.getLocalizedMessage()));
-//    }
-
-    // ResponseEntityExceptionHandler let you rewrite standard exceptions
-//    @Override
-//    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
-//            HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-//        return ResponseEntity.status(403).body("Something went wrong");
-//    }
 }
