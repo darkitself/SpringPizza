@@ -4,6 +4,7 @@ import com.example.springpizza.adapter.repository.AuditRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -12,12 +13,12 @@ public class AuditService {
 
     private final AuditRepository auditRepository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateAudit(String eventType, @Nullable Long userId, AuditableResult result) {
         auditRepository.save(new AuditEntity(eventType, userId, result, null));
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateAudit(String eventType, @Nullable Long userId, AuditableResult result, String message) {
         auditRepository.save(new AuditEntity(eventType, userId, result, message));
     }
