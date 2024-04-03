@@ -6,6 +6,7 @@ import com.example.springpizza.adapter.web.dto.request.CreateOrderRequest;
 import com.example.springpizza.adapter.web.dto.response.OrderResponse;
 import com.example.springpizza.adapter.web.errors.NotFoundException;
 import com.example.springpizza.domain.order.OrderEntity;
+import com.example.springpizza.domain.audit.Auditable;
 import com.example.springpizza.domain.user.UserEntity;
 import com.example.springpizza.service.factory.OrderFactory;
 import com.example.springpizza.service.mapper.OrderMapper;
@@ -38,6 +39,7 @@ public class OrderService {
     MessageSourceAccessor messageSourceAccessor;
 
 
+    @Auditable(type = "order_creation")
     public OrderResponse createOrder(UserEntity user, CreateOrderRequest orderRequest) {
         OrderEntity.OrderContext cntx = orderFactory.createContext(orderRequest);
         OrderEntity savedOrder = orderRepository.save(new OrderEntity(cntx, user));
@@ -49,6 +51,7 @@ public class OrderService {
         return messageSourceAccessor.getMessage(ORDER_CREATED);
     }
 
+    @Auditable(type = "order_get")
     public OrderResponse getOrder(Long orderId) {
         return orderRepository.findById(orderId)
                 .map(orderMapper::entityToResponse)

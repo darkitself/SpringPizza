@@ -7,5 +7,6 @@
 
     <include file="2024/03/2024-03-20-15-02.xml" relativeToChangelogFile="true"/>
     <include file="2024/03/2024-03-27-15-08.xml" relativeToChangelogFile="true"/>
+    <include file="2024/04/2024-04-03-15-22.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

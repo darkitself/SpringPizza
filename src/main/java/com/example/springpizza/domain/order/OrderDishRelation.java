@@ -1,5 +1,6 @@
-package com.example.springpizza.domain;
+package com.example.springpizza.domain.order;
 
+import com.example.springpizza.domain.DishEntity;
 import com.example.springpizza.domain.order.OrderEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
