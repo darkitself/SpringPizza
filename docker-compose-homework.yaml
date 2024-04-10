@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - homework-network
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  homework-handler:
+    image: sw24sx/spring_boot_course:0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=homework
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+    ports:
+      - "8081:8080"
+    networks:
+      - homework-network
+    depends_on:
+      - rabbitmq
+
+networks:
+  homework-network:
+    driver: bridge
