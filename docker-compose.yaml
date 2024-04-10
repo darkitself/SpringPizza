@@ -27,6 +27,32 @@ services:
     networks:
       - spring-pizza-network
 
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - spring-pizza-network
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  pizza-handler:
+    image: sw24sx/spring_boot_course:0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=pizza
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+    ports:
+      - "8081:8080"
+    networks:
+      - spring-pizza-network
+    depends_on:
+      - rabbitmq
+
 networks:
   spring-pizza-network:
     driver: bridge

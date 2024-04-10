@@ -4,9 +4,11 @@ import com.example.springpizza.adapter.eventlistener.event.EmailSendEvent;
 import com.example.springpizza.adapter.repository.OrderRepository;
 import com.example.springpizza.adapter.web.dto.request.CreateOrderRequest;
 import com.example.springpizza.adapter.web.dto.response.OrderResponse;
+import com.example.springpizza.adapter.web.errors.MessageException;
 import com.example.springpizza.adapter.web.errors.NotFoundException;
 import com.example.springpizza.domain.order.OrderEntity;
 import com.example.springpizza.domain.audit.Auditable;
+import com.example.springpizza.domain.order.OrderStatus;
 import com.example.springpizza.domain.user.UserEntity;
 import com.example.springpizza.service.factory.OrderFactory;
 import com.example.springpizza.service.mapper.OrderMapper;
@@ -38,6 +40,8 @@ public class OrderService {
 
     MessageSourceAccessor messageSourceAccessor;
 
+    OrderMessageService orderMessageService;
+
 
     @Auditable(type = "order_creation")
     public OrderResponse createOrder(UserEntity user, CreateOrderRequest orderRequest) {
@@ -59,6 +63,18 @@ public class OrderService {
     }
 
     public void removeOrder(Long orderId) {
+        var response = orderMessageService.sendOrderCancel(orderId);
+        if (!response.result()) {
+            throw new MessageException(response.message());
+        }
         orderRepository.deleteById(orderId);
+    }
+
+    public void updateOrderStatus(Long orderId, OrderStatus status) {
+        var orderOpt = orderRepository.findById(orderId);
+        orderOpt.ifPresent(order -> {
+            order.updateStatus(status);
+            orderRepository.save(order);
+        });
     }
 }

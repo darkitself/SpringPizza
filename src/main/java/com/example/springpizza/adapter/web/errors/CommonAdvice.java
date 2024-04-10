@@ -26,6 +26,11 @@ public class CommonAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
+    public ErrorResponse handleMessageException(MessageException exception) {
+        return new ErrorResponse(exception.getCode(), exception.getMessage());
+    }
+
+    @ExceptionHandler
     public List<ErrorResponse> handleConstraints(ConstraintViolationException ex) {
         return ex.getConstraintViolations()
                 .stream().map(e -> new ErrorResponse(VALIDATION_ERROR, e.getPropertyPath().toString(), e.getMessage())).toList();

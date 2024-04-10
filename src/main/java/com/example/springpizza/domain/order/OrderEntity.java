@@ -30,12 +30,20 @@ public class OrderEntity extends BaseDomainEntity {
     @JoinColumn(name = "user_id")
     UserEntity user;
 
+    @Enumerated(EnumType.STRING)
+    OrderStatus status;
+
     public OrderEntity(OrderContext cntx, UserEntity user) {
         dishes = cntx.dishes();
         dishes.forEach(d -> d.setOrder(this));
         cutleryCount = cntx.cutleryCount();
+        status = OrderStatus.SAVED;
         this.user = user;
         registerEvents(new OrderCreatedEvent(this));
+    }
+
+    public void updateStatus(OrderStatus status) {
+        this.status = status;
     }
 
     public record OrderContext(List<OrderDishRelation> dishes,
