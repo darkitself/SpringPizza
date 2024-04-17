@@ -65,6 +65,8 @@ services:
       - '3000:3000'
     volumes:
       - ./grafana:/var/lib/grafana
+    networks:
+      - spring-pizza-network
     depends_on:
       - prometheus
 
