@@ -2,6 +2,8 @@ package com.example.springpizza.adapter.web;
 
 import com.example.springpizza.adapter.web.dto.request.CreateOrderRequest;
 import com.example.springpizza.adapter.web.dto.response.OrderResponse;
+import com.example.springpizza.common.metrics.counter.CounterMetric;
+import com.example.springpizza.common.metrics.timer.TimerMetric;
 import com.example.springpizza.domain.user.UserEntity;
 import com.example.springpizza.service.OrderService;
 import jakarta.validation.Valid;
@@ -23,6 +25,8 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/order", consumes = APPLICATION_JSON_VALUE)
+    @CounterMetric(name = "client_order_create_counter")
+    @TimerMetric(name = "client_order_create_timer")
     public OrderResponse createOrder(@AuthenticationPrincipal UserEntity user,
                                      @Valid @RequestBody CreateOrderRequest orderRequest) {
         return orderService.createOrder(user, orderRequest);

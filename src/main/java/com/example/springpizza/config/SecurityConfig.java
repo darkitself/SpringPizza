@@ -22,7 +22,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private static final String[] PERMITTED_URI = {
-            "/public/**"
+            "/public/**",
+            "/actuator/**"
     };
 
     private static final String[] CLIENT_URI = {

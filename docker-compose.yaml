@@ -5,13 +5,14 @@ services:
     build:
       dockerfile: Dockerfile
     image: spring-pizza-backend:latest
-    hostname: spring_pizza_backend
+    hostname: spring.pizza.backend
     ports:
       - "8080:8080"
     networks:
       - spring-pizza-network
     depends_on:
       - postgres
+      - rabbitmq
 
   postgres:
     image: postgres:13.3
@@ -19,7 +20,7 @@ services:
       POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
-    hostname: spring_pizza_postgres
+    hostname: spring.pizza.postgres
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
@@ -32,17 +33,46 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    hostname: spring.pizza.rabbitmq
     networks:
       - spring-pizza-network
     ports:
       - "15672:15672"
       - "5672:5672"
 
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    container_name: prometheus
+    hostname: spring.pizza.prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    networks:
+      - spring-pizza-network
+    depends_on:
+      - spring-pizza-backend
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    user: '0'
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./grafana:/var/lib/grafana
+    depends_on:
+      - prometheus
+
   pizza-handler:
     image: sw24sx/spring_boot_course:0.3
     environment:
       - SPRING_PROFILES_ACTIVE=pizza
-      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_HOST=spring.pizza.rabbitmq
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest

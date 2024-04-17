@@ -27,12 +27,27 @@ spring:
           time_zone: UTC
 
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:spring_pizza_postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:spring_pizza}
+    url: jdbc:postgresql://${POSTGRES_HOST:spring.pizza.postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:spring_pizza}
     username: ${POSTGRES_USERNAME:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:spring.pizza.rabbitmq}
+
+management:
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
 
 logging:
   level:
