@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -32,6 +34,9 @@ public class OrderEntity extends BaseDomainEntity {
 
     @Enumerated(EnumType.STRING)
     OrderStatus status;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     public OrderEntity(OrderContext cntx, UserEntity user) {
         dishes = cntx.dishes();
