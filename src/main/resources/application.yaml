@@ -59,3 +59,10 @@ pizza:
     recipients:
       - "test@test.ru"
       - "other@other.com"
+  order:
+    ttl: "PT15S"
+    job:
+      delete:
+        cron: "*/11 * * * * *"
+        fixed-rate: "8000"
+        fixed-delay: "9000"
